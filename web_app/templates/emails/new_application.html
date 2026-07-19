@@ -1,0 +1,17 @@
+<!DOCTYPE html><html><body style="font-family:'Segoe UI',sans-serif;background:#f4f6fa;">
+<div style="max-width:560px;margin:40px auto;background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 2px 16px rgba(0,0,0,0.08);">
+<div style="background:linear-gradient(135deg,#1a1f36,#2563eb);padding:28px;text-align:center;"><h2 style="color:#fff;margin:0;">📋 New Application</h2><p style="color:rgba(255,255,255,0.8);margin:4px 0 0;">Action required in admin portal</p></div>
+<div style="padding:32px;">
+<p>Hi <strong>{{ admin.name }}</strong>,</p>
+<p style="color:#6b7280;">A new client has applied for access to AlertEye:</p>
+<div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:20px;margin:16px 0;">
+  <div style="margin-bottom:10px;"><strong>Name:</strong> {{ applicant.name }}</div>
+  <div style="margin-bottom:10px;"><strong>Email:</strong> {{ applicant.email }}</div>
+  <div style="margin-bottom:10px;"><strong>Company:</strong> {{ applicant.company or 'Not provided' }}</div>
+  <div><strong>Phone:</strong> {{ applicant.phone or 'Not provided' }}</div>
+</div>
+<p style="color:#6b7280;">Log in to your admin portal to review and approve or reject this application.</p>
+</div>
+<div style="background:#f8fafc;padding:16px;text-align:center;border-top:1px solid #e2e8f0;">
+<p style="color:#9ca3af;font-size:12px;margin:0;">AlertEye · Admin Notification</p>
+</div></div></body></html>

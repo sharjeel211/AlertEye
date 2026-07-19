@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% block title %}Users{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <div>
+    <h1 class="page-title">Clients</h1>
+    <p class="page-subtitle">Manage active client accounts and subscriptions</p>
+  </div>
+</div>
+
+<form method="GET" class="search-bar mb-4">
+  <div class="input-group">
+    <span class="input-group-text"><i class="fas fa-search"></i></span>
+    <input type="text" name="q" class="form-control" placeholder="Search by name or email..." value="{{ search }}">
+    <button type="submit" class="btn btn-primary">Search</button>
+  </div>
+</form>
+
+{% if users %}
+<div class="card">
+  <div class="table-responsive">
+    <table class="table table-hover align-middle mb-0">
+      <thead>
+        <tr>
+          <th>Client</th>
+          <th>Email</th>
+          <th>Subscription</th>
+          <th>Plan</th>
+          <th>Modules</th>
+          <th>Expires</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for u in users %}
+        {% set badge = u.subscription_badge %}
+        <tr>
+          <td>
+            <div class="d-flex align-items-center gap-2">
+              <div class="avatar-sm">{{ u.name[0].upper() }}</div>
+              <div>
+                <div class="fw-500">{{ u.name }}</div>
+                <div class="text-muted small">{{ u.company or '—' }}</div>
+              </div>
+            </div>
+          </td>
+          <td>{{ u.email }}</td>
+          <td><span class="badge bg-{{ badge[0] }}-soft text-{{ badge[0] }}">{{ badge[1] }}</span></td>
+          <td><span class="text-capitalize">{{ u.subscription_plan or '—' }}</span></td>
+          <td>
+            {% for m in u.get_modules() %}
+            <span class="badge bg-light text-dark border me-1">{{ m.replace('_',' ') }}</span>
+            {% endfor %}
+          </td>
+          <td class="text-muted small">
+            {{ u.subscription_end.strftime('%b %d, %Y') if u.subscription_end else '—' }}
+          </td>
+          <td>
+            <a href="{{ url_for('admin_user_detail', user_id=u.id) }}" class="btn btn-sm btn-outline-primary">
+              Manage
+            </a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% else %}
+<div class="empty-page">
+  <i class="fas fa-users"></i>
+  <h5>No clients found</h5>
+</div>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,16 @@
+This file is intentionally not committed to the repo — it contains a
+Firebase project API key specific to this project's Firebase instance.
+
+To run the Android app yourself:
+
+1. Go to https://console.firebase.google.com
+2. Create a project (or use an existing one) and add an Android app to it
+   - Package name must match the one in app/build.gradle.kts (applicationId)
+3. Firebase will let you download a google-services.json file
+4. Place it at: app/google-services.json (same folder as this file)
+5. Build the app as normal
+
+If you're a teammate on the original AlertEye project, ask the project
+owner to add you as a member in Firebase Console (Project settings ->
+Users and permissions) instead of creating a new project, so you're
+using the same Firebase backend as the desktop app.

@@ -1,0 +1,101 @@
+{
+  "app": {
+    "version": "2.0.0",
+    "theme": "dark",
+    "language": "en"
+  },
+  "camera": {
+    "default_source": 0,
+    "resolution_width": 640,
+    "resolution_height": 480,
+    "fps_target": 30,
+    "buffer_size": 5,
+    "source": 0,
+    "width": 640,
+    "height": 480,
+    "fps": 30,
+    "rtsp_url": "",
+    "video_file": ""
+  },
+  "detection": {
+    "confidence_threshold": 0.25,
+    "nms_threshold": 0.45,
+    "max_detections": 50,
+    "frame_skip": 2,
+    "gpu_enabled": false,
+    "device": "auto",
+    "confirmation_frames": 1
+  },
+  "modules": {
+    "weapon_detection": {
+      "enabled": true,
+      "confidence_threshold": 0.55,
+      "model_path": "models/weapon_detection.pt",
+      "alert_on_detect": true
+    },
+    "fire_smoke_detection": {
+      "enabled": true,
+      "confidence_threshold": 0.45,
+      "model_path": "models/fire_smoke.pt",
+      "alert_on_detect": true
+    },
+    "accident_detection": {
+      "enabled": true,
+      "confidence_threshold": 0.78,
+      "model_path": "models/accident_detection.pt",
+      "alert_on_detect": true
+    },
+    "weapon": {
+      "enabled": true,
+      "sensitivity": 0.25
+    },
+    "fire_smoke": {
+      "enabled": true,
+      "sensitivity": 0.25
+    },
+    "accident": {
+      "enabled": true,
+      "sensitivity": 0.25
+    }
+  },
+  "alerts": {
+    "sound_enabled": true,
+    "sound_file": "assets/sounds/alert.wav",
+    "alert_cooldown_seconds": 6,
+    "screenshot_on_alert": true,
+    "record_on_alert": true,
+    "record_duration_seconds": 15,
+    "screenshot_enabled": true,
+    "video_clip_enabled": true,
+    "clip_duration": 10,
+    "cooldown_seconds": 10
+  },
+  "storage": {
+    "logs_path": "logs",
+    "screenshots_path": "screenshots",
+    "recordings_path": "recordings",
+    "max_log_size_mb": 100,
+    "max_storage_gb": 10,
+    "auto_cleanup": true,
+    "screenshots_dir": "screenshots",
+    "recordings_dir": "recordings",
+    "logs_dir": "logs"
+  },
+  "display": {
+    "show_fps": true,
+    "show_confidence": true,
+    "show_labels": true,
+    "show_bounding_boxes": true,
+    "bbox_thickness": 2,
+    "overlay_opacity": 0.7,
+    "font_scale": 0.6
+  },
+  "performance": {
+    "thread_pool_size": 4,
+    "detection_queue_size": 10,
+    "ui_update_interval_ms": 33,
+    "use_gpu": false,
+    "num_threads": 4,
+    "buffer_size": 5
+  }
+}

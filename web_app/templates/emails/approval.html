@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<body style="margin:0;padding:0;background:#f4f6fa;font-family:'Segoe UI',sans-serif;">
+<div style="max-width:600px;margin:40px auto;background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 2px 20px rgba(0,0,0,0.08);">
+  <div style="background:linear-gradient(135deg,#1a1f36 0%,#2563eb 100%);padding:40px 32px;text-align:center;">
+    <div style="font-size:40px;margin-bottom:12px;">🛡️</div>
+    <h1 style="color:#fff;margin:0;font-size:24px;font-weight:700;">You're Approved!</h1>
+    <p style="color:rgba(255,255,255,0.8);margin:8px 0 0;">Your AlertEye account is ready</p>
+  </div>
+  <div style="padding:40px 32px;">
+    <p style="font-size:16px;color:#374151;">Hi <strong>{{ user.name }}</strong>,</p>
+    <p style="color:#6b7280;line-height:1.6;">Great news! Your application has been approved. Log in to the AlertEye desktop application with the email and the password you chose during registration:</p>
+
+    <div style="background:#f8fafc;border:2px solid #e2e8f0;border-radius:8px;padding:24px;margin:24px 0;">
+      <div style="margin-bottom:12px;">
+        <span style="font-size:11px;font-weight:600;color:#6b7280;text-transform:uppercase;letter-spacing:1px;">Email</span>
+        <div style="font-family:'Courier New',monospace;font-size:15px;color:#1e293b;margin-top:4px;background:#fff;padding:8px 12px;border-radius:6px;border:1px solid #e2e8f0;">{{ user.email }}</div>
+      </div>
+      <div>
+        <span style="font-size:11px;font-weight:600;color:#6b7280;text-transform:uppercase;letter-spacing:1px;">Password</span>
+        <div style="font-size:14px;color:#475569;margin-top:4px;background:#fff;padding:8px 12px;border-radius:6px;border:1px solid #e2e8f0;">The password you created during registration.</div>
+      </div>
+    </div>
+
+    <div style="background:#ecfdf5;border-left:4px solid #10b981;padding:16px;border-radius:0 8px 8px 0;margin-bottom:24px;">
+      <strong style="color:#065f46;">Your Subscription</strong><br>
+      <span style="color:#047857;">Plan: <strong>{{ user.subscription_plan.title() }}</strong> ·
+      Expires: <strong>{{ user.subscription_end.strftime('%B %d, %Y') }}</strong></span>
+    </div>
+
+    <h3 style="color:#1e293b;font-size:16px;margin-bottom:16px;">Enabled Detection Modules:</h3>
+    <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:28px;">
+      {% for m in user.get_modules() %}
+      <span style="background:#eff6ff;color:#1d4ed8;padding:6px 14px;border-radius:20px;font-size:13px;font-weight:500;">
+        {% if m == 'fire_smoke' %}🔥 Fire & Smoke{% elif m == 'weapon' %}🔫 Weapon Detection{% elif m == 'accident' %}🚗 Accident System{% else %}{{ m }}{% endif %}
+      </span>
+      {% endfor %}
+    </div>
+
+    <div style="text-align:center;margin:32px 0;">
+      <a href="{{ download_url }}" style="display:inline-block;background:linear-gradient(135deg,#2563eb,#1d4ed8);color:#fff;text-decoration:none;padding:14px 32px;border-radius:8px;font-weight:600;font-size:15px;">
+        ⬇️ Download AlertEye Desktop App
+      </a>
+    </div>
+
+    <p style="color:#6b7280;font-size:13px;line-height:1.6;">After downloading, open the app and log in with your credentials above. Change your password after first login.</p>
+  </div>
+  <div style="background:#f8fafc;padding:20px 32px;text-align:center;border-top:1px solid #e2e8f0;">
+    <p style="color:#9ca3af;font-size:12px;margin:0;">AlertEye Intelligent Surveillance · <a href="#" style="color:#2563eb;">Support</a></p>
+  </div>
+</div>
+</body>
+</html>

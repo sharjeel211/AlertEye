@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login — AlertEye</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+</head>
+<body class="auth-body">
+
+<div class="auth-container">
+  <div class="auth-card">
+    <div class="auth-header">
+      <img class="auth-logo" src="{{ url_for('static', filename='img/logo.png') }}" alt="AlertEye">
+      <h2 class="auth-title">AlertEye</h2>
+      <p class="auth-subtitle">AI Powered. Always Watching.</p>
+    </div>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% for category, message in messages %}
+      <div class="alert alert-{{ 'danger' if category == 'error' else category }} py-2 small">
+        {{ message }}
+      </div>
+      {% endfor %}
+    {% endwith %}
+
+    <form method="POST" action="{{ url_for('login') }}">
+      <div class="form-group mb-3">
+        <label class="form-label">Email Address</label>
+        <div class="input-icon">
+          <i class="fas fa-envelope"></i>
+          <input type="email" name="email" class="form-control" placeholder="you@example.com" required autofocus>
+        </div>
+      </div>
+      <div class="form-group mb-4">
+        <div class="d-flex justify-content-between align-items-center">
+          <label class="form-label mb-0">Password</label>
+          <a href="{{ url_for('forgot_password') }}" class="small">Forgot password?</a>
+        </div>
+        <div class="input-icon mt-2">
+          <i class="fas fa-lock"></i>
+          <input type="password" name="password" class="form-control" placeholder="••••••••" required>
+        </div>
+      </div>
+      <button type="submit" class="btn btn-primary w-100 btn-auth">
+        <i class="fas fa-right-to-bracket me-2"></i>Sign In
+      </button>
+    </form>
+
+    <div class="auth-footer">
+      <p>Don't have an account? <a href="{{ url_for('apply') }}">Apply for access</a></p>
+    </div>
+
+    <div class="theme-toggle-auth">
+      <button onclick="toggleTheme()" class="btn btn-sm btn-outline-secondary">
+        <i class="fas fa-moon" id="themeIcon"></i> Toggle Theme
+      </button>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

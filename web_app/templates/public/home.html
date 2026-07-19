@@ -1,0 +1,103 @@
+{% extends "public/layout.html" %}
+{% block title %}AlertEye — See trouble before it spreads{% endblock %}
+
+{% block content %}
+<section class="hero">
+  <div class="container hero-grid">
+    <div class="hero-copy">
+      <span class="eyebrow">AI video monitoring</span>
+      <h1>See trouble the moment it starts.</h1>
+      <p class="lead">AlertEye watches your camera feeds around the clock and calls your phone the instant it spots fire, a weapon, or a road accident. No staring at screens. No missed seconds.</p>
+      <div class="hero-actions">
+        <a href="{{ url_for('apply') }}" class="btn-pill btn-lg">Get started</a>
+        <a href="{{ url_for('about') }}" class="btn-text">See how it works <i class="fas fa-arrow-right"></i></a>
+      </div>
+      <div class="hero-trust">
+        <div><strong>5 sec</strong><span>to confirm a threat</span></div>
+        <div><strong>3</strong><span>detection modules</span></div>
+        <div><strong>24/7</strong><span>always watching</span></div>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="feed-card">
+        <div class="feed-top">
+          <span class="cam-label">CAM-01 · Front entrance</span>
+          <span class="live-dot">LIVE</span>
+        </div>
+        <div class="feed-frame">
+          <div class="scan-line"></div>
+          <div class="detect-box">
+            <span>Fire detected · 96%</span>
+          </div>
+        </div>
+        <div class="feed-foot">
+          <i class="fas fa-phone-volume"></i>
+          <span>Calling your phone now</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="section-head">
+      <h2>Built to catch what people miss</h2>
+      <p>Three detection engines run on every frame, so a threat never depends on someone watching the right monitor at the right time.</p>
+    </div>
+    <div class="card-grid">
+      <article class="feature">
+        <div class="feature-icon"><i class="fas fa-fire"></i></div>
+        <h3>Fire &amp; smoke</h3>
+        <p>Spots the first signs of flame or smoke and raises the alarm before it has time to spread.</p>
+      </article>
+      <article class="feature">
+        <div class="feature-icon"><i class="fas fa-shield-halved"></i></div>
+        <h3>Weapon detection</h3>
+        <p>Recognises firearms and bladed weapons in the frame and flags them in real time.</p>
+      </article>
+      <article class="feature">
+        <div class="feature-icon"><i class="fas fa-car-burst"></i></div>
+        <h3>Accident alerts</h3>
+        <p>Detects road collisions and sends help to the exact location without delay.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="section section-alt">
+  <div class="container">
+    <div class="section-head">
+      <h2>From camera to phone call in seconds</h2>
+      <p>You set it up once. After that, AlertEye does the watching and the warning.</p>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <span class="step-num">1</span>
+        <h3>Connect your cameras</h3>
+        <p>Point the desktop app at your existing feeds. No new hardware to buy.</p>
+      </div>
+      <div class="step">
+        <span class="step-num">2</span>
+        <h3>Let the AI watch</h3>
+        <p>Every frame is checked for fire, weapons and accidents as it happens.</p>
+      </div>
+      <div class="step">
+        <span class="step-num">3</span>
+        <h3>Get alerted instantly</h3>
+        <p>A confirmed threat rings your phone and emails you with the live location.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container cta-band">
+    <div>
+      <h2>Ready to put a second set of eyes on it?</h2>
+      <p>Apply for access and have your team protected this week.</p>
+    </div>
+    <a href="{{ url_for('apply') }}" class="btn-pill btn-lg">Get started</a>
+  </div>
+</section>
+{% endblock %}

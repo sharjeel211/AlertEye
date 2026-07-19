@@ -1,0 +1,61 @@
+# AlertEye - Intelligent Surveillance System
+# Python Dependencies
+
+# Core GUI Framework — PySide6 works on Python 3.9–3.14+
+PySide6>=6.6.0
+
+# Computer Vision & Video Processing
+opencv-python>=4.8.0
+opencv-contrib-python>=4.8.0
+
+# AI/ML - YOLO Detection
+ultralytics>=8.0.0          # YOLOv8/YOLOv11 framework
+
+# Deep Learning Backend (choose one)
+torch>=2.0.0                # PyTorch (CPU)
+torchvision>=0.15.0
+# torch>=2.0.0+cu118        # Uncomment for CUDA 11.8
+# torch>=2.0.0+cu121        # Uncomment for CUDA 12.1
+
+# Image Processing
+Pillow>=10.0.0
+numpy>=1.24.0
+scipy>=1.11.0
+
+# Audio Alerts — winsound is built into Windows (zero install needed)
+# simpleaudio requires MSVC build tools — optional, only needed on Linux/macOS
+# Do NOT add pygame or playsound — both fail on Python 3.13+
+
+# Data & Logging
+pandas>=2.0.0
+
+# Configuration
+pyyaml>=6.0
+
+# Progress & Display Utilities
+tqdm>=4.65.0
+colorlog>=6.7.0
+
+# HTTP/Network (for IP cameras)
+requests>=2.31.0
+
+# System Information
+psutil>=5.9.0
+GPUtil>=1.4.0
+
+# Optional: HuggingFace model downloads
+# huggingface-hub>=0.17.0
+
+# Optional: Roboflow integration
+# roboflow>=1.0.0
+
+# Optional: Database
+# SQLAlchemy>=2.0.0
+
+# Optional: Cloud/Notifications
+# boto3>=1.28.0             # AWS
+# firebase-admin>=6.2.0     # Firebase
+
+# Auth + Alerts (v2.0)
+python-dotenv>=1.0.0
+firebase-admin>=6.2.0     # Firebase Realtime Database alerts (Android app)

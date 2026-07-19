@@ -1,0 +1,149 @@
+{% extends "base.html" %}
+{% block title %}My Dashboard{% endblock %}
+{% block content %}
+<div class="page-header">
+  <div><h1 class="page-title">Welcome, {{ user.name.split()[0] }}</h1><p class="page-subtitle">Your AlertEye subscription overview</p></div>
+</div>
+
+{% set badge = user.subscription_badge %}
+
+{% if not user.is_subscription_active() %}
+<div class="alert alert-danger d-flex align-items-center gap-3 mb-4">
+  <i class="fas fa-lock fa-2x"></i>
+  <div>
+    <strong>Subscription Expired</strong><br>
+    Your modules are locked. Please contact your administrator to renew.
+  </div>
+</div>
+{% elif user.days_until_expiry() <= 7 %}
+<div class="alert alert-warning d-flex align-items-center gap-3 mb-4">
+  <i class="fas fa-triangle-exclamation fa-2x"></i>
+  <div>
+    <strong>Subscription expiring in {{ user.days_until_expiry() }} days</strong><br>
+    Contact your administrator to renew before your access is locked.
+  </div>
+</div>
+{% endif %}
+
+<div class="row g-4 mb-4">
+  <div class="col-sm-6 col-lg-3">
+    <div class="stat-card">
+      <div class="stat-icon bg-{{ badge[0] }}-soft"><i class="fas fa-circle-check text-{{ badge[0] }}"></i></div>
+      <div class="stat-body"><div class="stat-value">{{ badge[1] }}</div><div class="stat-label">Subscription</div></div>
+    </div>
+  </div>
+  <div class="col-sm-6 col-lg-3">
+    <div class="stat-card">
+      <div class="stat-icon bg-primary-soft"><i class="fas fa-calendar-days text-primary"></i></div>
+      <div class="stat-body"><div class="stat-value">{{ user.days_until_expiry() }}</div><div class="stat-label">Days Remaining</div></div>
+    </div>
+  </div>
+  <div class="col-sm-6 col-lg-3">
+    <div class="stat-card">
+      <div class="stat-icon bg-info-soft"><i class="fas fa-puzzle-piece text-info"></i></div>
+      <div class="stat-body"><div class="stat-value">{{ user.get_modules()|length }}</div><div class="stat-label">Active Modules</div></div>
+    </div>
+  </div>
+  <div class="col-sm-6 col-lg-3">
+    <div class="stat-card">
+      <div class="stat-icon bg-danger-soft"><i class="fas fa-bell text-danger"></i></div>
+      <div class="stat-body"><div class="stat-value">{{ alerts|length }}</div><div class="stat-label">Recent Alerts</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="row g-4">
+
+  <div class="col-lg-5">
+    <div class="card h-100">
+      <div class="card-header"><i class="fas fa-puzzle-piece me-2 text-primary"></i>Your Modules</div>
+      <div class="card-body">
+        {% set all_mods = [('fire_smoke','fire','Fire & Smoke','danger'),('weapon','gun','Weapon Detection','warning'),('accident','car-burst','Accident System','primary')] %}
+        {% for mod, icon, label, color in all_mods %}
+        {% set enabled = mod in user.get_modules() and user.is_subscription_active() %}
+        <div class="module-status-row">
+          <div class="module-icon-sm bg-{{ color }}-soft"><i class="fas fa-{{ icon }} text-{{ color }}"></i></div>
+          <span class="module-label">{{ label }}</span>
+          <span class="badge {% if enabled %}bg-success-soft text-success{% else %}bg-light text-muted border{% endif %}">
+            {% if enabled %}<i class="fas fa-circle-check me-1"></i>Active{% else %}<i class="fas fa-lock me-1"></i>Locked{% endif %}
+          </span>
+        </div>
+        {% endfor %}
+
+        {% if user.is_subscription_active() %}
+        <div class="mt-4 d-grid gap-2">
+          <a href="{{ url_for('download_app') }}" class="btn btn-primary">
+            <i class="fas fa-desktop me-2"></i>Download Desktop App
+          </a>
+          <a href="{{ url_for('download_android') }}" class="btn btn-dark">
+            <i class="fab fa-android me-2"></i>Download Android App (APK)
+          </a>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-7">
+    <div class="card">
+      <div class="card-header"><i class="fas fa-phone-volume me-2 text-danger"></i>Emergency Contacts</div>
+      <div class="card-body">
+        <p class="text-muted small mb-3">Your emergency number is called when a threat is confirmed. Leave a field blank to keep its current value.</p>
+        <form method="POST" action="{{ url_for('update_emergency_contacts') }}">
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label class="form-label small">Your Emergency Number</label>
+              <input type="tel" name="emergency_phone" class="form-control" value="{{ user.emergency_phone or '' }}" placeholder="e.g. +1 415 555 0132">
+            </div>
+            <div class="col-md-6">
+              <label class="form-label small"><i class="fas fa-shield-halved text-primary me-1"></i>Police</label>
+              <input type="tel" name="police_number" class="form-control" value="{{ user.police_number or '911' }}">
+            </div>
+            <div class="col-md-6">
+              <label class="form-label small"><i class="fas fa-fire text-danger me-1"></i>Fire Brigade</label>
+              <input type="tel" name="fire_number" class="form-control" value="{{ user.fire_number or '911' }}">
+            </div>
+            <div class="col-md-6">
+              <label class="form-label small"><i class="fas fa-truck-medical text-success me-1"></i>Ambulance</label>
+              <input type="tel" name="ambulance_number" class="form-control" value="{{ user.ambulance_number or '911' }}">
+            </div>
+          </div>
+          <button class="btn btn-primary mt-3"><i class="fas fa-save me-1"></i>Save Contacts</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row g-4 mt-1">
+
+  <div class="col-lg-12">
+    <div class="card h-100">
+      <div class="card-header"><i class="fas fa-bell me-2 text-danger"></i>Recent Detections</div>
+      <div class="card-body p-0">
+        {% if alerts %}
+        <div class="table-responsive">
+          <table class="table table-hover mb-0">
+            <thead><tr><th>Type</th><th>Camera</th><th>Confidence</th><th>Time</th></tr></thead>
+            <tbody>
+              {% for a in alerts %}
+              {% set icons = {'weapon':('danger','gun'),'fire_smoke':('warning','fire'),'accident':('primary','car-burst')} %}
+              {% set ic = icons.get(a.alert_type,('secondary','bell')) %}
+              <tr>
+                <td><span class="badge bg-{{ ic[0] }}-soft text-{{ ic[0] }}"><i class="fas fa-{{ ic[1] }} me-1"></i>{{ a.alert_type.replace('_',' ').title() }}</span></td>
+                <td><code class="small">{{ a.camera_name }}</code></td>
+                <td>{{ (a.confidence*100)|int }}%</td>
+                <td class="text-muted small">{{ a.timestamp.strftime('%b %d %H:%M') }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        {% else %}
+        <div class="empty-state py-5"><i class="fas fa-shield-halved"></i><p>No detections yet — system is monitoring</p></div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

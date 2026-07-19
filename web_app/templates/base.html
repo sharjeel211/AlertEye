@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}AlertEye{% endblock %} — AI Powered. Always Watching.</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+  {% block extra_css %}{% endblock %}
+</head>
+<body>
+
+{% if session.user_id %}
+
+<div class="sidebar" id="sidebar">
+  <div class="sidebar-brand">
+    <img class="brand-logo" src="{{ url_for('static', filename='img/logo.png') }}" alt="AlertEye">
+    <div class="brand-text">
+      <span class="brand-name">AlertEye</span>
+      <span class="brand-sub">{% if session.role == 'admin' %}Admin Portal{% else %}Client Portal{% endif %}</span>
+    </div>
+  </div>
+
+  <nav class="sidebar-nav">
+    {% if session.role == 'admin' %}
+    <a href="{{ url_for('admin_dashboard') }}" class="nav-item {% if request.endpoint == 'admin_dashboard' %}active{% endif %}">
+      <i class="fas fa-gauge-high"></i><span>Dashboard</span>
+    </a>
+    <a href="{{ url_for('admin_applications') }}" class="nav-item {% if request.endpoint == 'admin_applications' %}active{% endif %}">
+      <i class="fas fa-file-circle-check"></i><span>Applications</span>
+      {% set pending_count = pending_applications_count() %}
+      {% if pending_count > 0 %}<span class="badge bg-danger ms-auto">{{ pending_count }}</span>{% endif %}
+    </a>
+    <a href="{{ url_for('admin_users') }}" class="nav-item {% if request.endpoint == 'admin_users' %}active{% endif %}">
+      <i class="fas fa-users"></i><span>Users</span>
+    </a>
+    <a href="{{ url_for('admin_alerts') }}" class="nav-item {% if request.endpoint == 'admin_alerts' %}active{% endif %}">
+      <i class="fas fa-bell"></i><span>Alerts</span>
+    </a>
+    {% else %}
+    <a href="{{ url_for('client_dashboard') }}" class="nav-item {% if request.endpoint == 'client_dashboard' %}active{% endif %}">
+      <i class="fas fa-gauge-high"></i><span>Dashboard</span>
+    </a>
+    <a href="{{ url_for('download_app') }}" class="nav-item">
+      <i class="fas fa-download"></i><span>Download App</span>
+    </a>
+    {% endif %}
+  </nav>
+
+  <div class="sidebar-footer">
+    <button class="theme-toggle" onclick="toggleTheme()" title="Toggle Theme">
+      <i class="fas fa-moon" id="themeIcon"></i>
+    </button>
+    <a href="{{ url_for('logout') }}" class="btn-logout">
+      <i class="fas fa-right-from-bracket"></i><span>Logout</span>
+    </a>
+  </div>
+</div>
+
+<div class="main-content" id="mainContent">
+
+  <div class="topbar">
+    <button class="sidebar-toggle" onclick="toggleSidebar()">
+      <i class="fas fa-bars"></i>
+    </button>
+    <div class="topbar-right">
+      <div class="user-chip">
+        <div class="user-avatar">{{ session.get('name', 'U')[0].upper() }}</div>
+        <span class="user-name">{{ session.get('name', 'User') }}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="flash-container">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% for category, message in messages %}
+      <div class="alert alert-{{ 'danger' if category == 'error' else category }} alert-dismissible fade show" role="alert">
+        <i class="fas fa-{% if category == 'success' %}check-circle{% elif category == 'danger' %}exclamation-circle{% elif category == 'warning' %}triangle-exclamation{% else %}info-circle{% endif %} me-2"></i>
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+      </div>
+      {% endfor %}
+    {% endwith %}
+  </div>
+
+  {% block content %}{% endblock %}
+</div>
+
+{% else %}
+
+<div class="flash-container position-fixed top-0 start-50 translate-middle-x mt-3" style="z-index:9999; min-width:400px;">
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% for category, message in messages %}
+    <div class="alert alert-{{ 'danger' if category == 'error' else category }} alert-dismissible fade show" role="alert">
+      {{ message }}
+      <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+    {% endfor %}
+  {% endwith %}
+</div>
+{% endif %}
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+{% block extra_js %}{% endblock %}
+</body>
+</html>

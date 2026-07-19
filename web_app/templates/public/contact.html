@@ -1,0 +1,58 @@
+{% extends "public/layout.html" %}
+{% block title %}Contact — AlertEye{% endblock %}
+
+{% block content %}
+<section class="page-hero">
+  <div class="container">
+    <span class="eyebrow">Contact</span>
+    <h1>Let's talk about what you need to protect.</h1>
+    <p class="lead">Questions about setup, pricing, or whether AlertEye fits your cameras? Send a note and a real person will reply.</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container contact-grid">
+    <form class="contact-form" method="POST" action="{{ url_for('contact') }}">
+      <div class="field">
+        <label for="cf-name">Your name</label>
+        <input type="text" id="cf-name" name="name" placeholder="Enter your full name" required>
+      </div>
+      <div class="field">
+        <label for="cf-email">Email address</label>
+        <input type="email" id="cf-email" name="email" placeholder="you@company.com" required>
+      </div>
+      <div class="field">
+        <label for="cf-message">How can we help?</label>
+        <textarea id="cf-message" name="message" rows="5" placeholder="Tell us a little about your setup..." required></textarea>
+      </div>
+      <button type="submit" class="btn-pill btn-lg">Send message</button>
+    </form>
+
+    <aside class="contact-aside">
+      <div class="contact-item">
+        <i class="fas fa-envelope"></i>
+        <div>
+          <h3>Email</h3>
+          <a href="mailto:{{ config.COMPANY_EMAIL }}">{{ config.COMPANY_EMAIL }}</a>
+        </div>
+      </div>
+      <div class="contact-item">
+        <i class="fas fa-headset"></i>
+        <div>
+          <h3>Support</h3>
+          <p>Already a customer? Sign in to reach support from your dashboard.</p>
+          <a href="{{ url_for('login') }}" class="btn-text">Go to sign in <i class="fas fa-arrow-right"></i></a>
+        </div>
+      </div>
+      <div class="contact-item">
+        <i class="fas fa-bolt"></i>
+        <div>
+          <h3>Get started</h3>
+          <p>Ready now? Apply for access and we'll set you up.</p>
+          <a href="{{ url_for('apply') }}" class="btn-text">Apply for access <i class="fas fa-arrow-right"></i></a>
+        </div>
+      </div>
+    </aside>
+  </div>
+</section>
+{% endblock %}

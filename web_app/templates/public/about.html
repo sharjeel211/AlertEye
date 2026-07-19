@@ -1,0 +1,52 @@
+{% extends "public/layout.html" %}
+{% block title %}About — AlertEye{% endblock %}
+
+{% block content %}
+<section class="page-hero">
+  <div class="container">
+    <span class="eyebrow">About us</span>
+    <h1>We started AlertEye because seconds matter.</h1>
+    <p class="lead">A camera that only records is useful after the fact. We wanted one that speaks up while there is still time to act.</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container prose-grid">
+    <div class="prose">
+      <h2>The problem we kept seeing</h2>
+      <p>Most places already have cameras. What they don't have is someone watching every feed, every minute. Fires take hold, incidents escalate, and the footage only gets reviewed once the damage is done.</p>
+      <p>We believed the cameras already in place could do far more. With modern detection models, a feed can be understood as it happens, not just stored for later.</p>
+
+      <h2>What AlertEye does</h2>
+      <p>AlertEye runs alongside your existing cameras and checks every frame for fire and smoke, weapons, and road accidents. When it is confident a threat is real, it calls your phone, sends a push notification, and emails you with the live location. The whole thing takes seconds.</p>
+
+      <h2>How we think about it</h2>
+      <p>Detection should be quiet until it isn't. We tune for confirmed threats rather than constant noise, so an alert from AlertEye is something you can trust and act on immediately.</p>
+    </div>
+    <aside class="value-list">
+      <div class="value">
+        <h3>Fast by design</h3>
+        <p>A threat is confirmed and escalated within about five seconds.</p>
+      </div>
+      <div class="value">
+        <h3>Works with what you have</h3>
+        <p>No rip-and-replace. Point it at the cameras you already run.</p>
+      </div>
+      <div class="value">
+        <h3>Clear when it counts</h3>
+        <p>One trustworthy alert beats a hundred false alarms.</p>
+      </div>
+    </aside>
+  </div>
+</section>
+
+<section class="section section-alt">
+  <div class="container cta-band">
+    <div>
+      <h2>Want to see it on your own cameras?</h2>
+      <p>Tell us what you need to protect and we'll take it from there.</p>
+    </div>
+    <a href="{{ url_for('contact') }}" class="btn-pill btn-lg">Talk to us</a>
+  </div>
+</section>
+{% endblock %}

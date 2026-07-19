@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}AlertEye{% endblock %}</title>
+  <meta name="description" content="{% block description %}AlertEye watches your cameras around the clock and warns you the moment it sees fire, a weapon, or an accident.{% endblock %}">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/public.css') }}">
+  {% block extra_css %}{% endblock %}
+</head>
+<body>
+
+<header class="site-header" id="siteHeader">
+  <div class="container header-inner">
+    <a class="brand" href="{{ url_for('index') }}">
+      <img src="{{ url_for('static', filename='img/logo.png') }}" alt="AlertEye logo">
+      <span>AlertEye</span>
+    </a>
+
+    <button class="nav-toggle" id="navToggle" aria-label="Open menu">
+      <span></span><span></span><span></span>
+    </button>
+
+    <nav class="site-nav" id="siteNav">
+      <a href="{{ url_for('index') }}" class="{% if request.endpoint == 'index' %}active{% endif %}">Home</a>
+      <a href="{{ url_for('about') }}" class="{% if request.endpoint == 'about' %}active{% endif %}">About</a>
+      <a href="{{ url_for('contact') }}" class="{% if request.endpoint == 'contact' %}active{% endif %}">Contact</a>
+      <a href="{{ url_for('login') }}" class="nav-signin">Sign in</a>
+      <a href="{{ url_for('apply') }}" class="btn-pill">Get started</a>
+    </nav>
+  </div>
+</header>
+
+<div class="flash-stack">
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% for category, message in messages %}
+    <div class="flash flash-{{ 'danger' if category == 'error' else category }}">{{ message }}</div>
+    {% endfor %}
+  {% endwith %}
+</div>
+
+<main>
+  {% block content %}{% endblock %}
+</main>
+
+<footer class="site-footer">
+  <div class="container footer-inner">
+    <div class="footer-brand">
+      <a class="brand" href="{{ url_for('index') }}">
+        <img src="{{ url_for('static', filename='img/logo.png') }}" alt="AlertEye logo">
+        <span>AlertEye</span>
+      </a>
+      <p>Real-time threat detection for the places that matter to you.</p>
+    </div>
+    <div class="footer-links">
+      <div>
+        <h4>Product</h4>
+        <a href="{{ url_for('index') }}">Overview</a>
+        <a href="{{ url_for('about') }}">About</a>
+        <a href="{{ url_for('apply') }}">Get started</a>
+      </div>
+      <div>
+        <h4>Account</h4>
+        <a href="{{ url_for('login') }}">Sign in</a>
+        <a href="{{ url_for('apply') }}">Apply for access</a>
+      </div>
+      <div>
+        <h4>Support</h4>
+        <a href="{{ url_for('contact') }}">Contact us</a>
+      </div>
+    </div>
+  </div>
+  <div class="container footer-bottom">
+    <span>&copy; {{ now.year }} AlertEye. All rights reserved.</span>
+  </div>
+</footer>
+
+<button class="chat-launcher" id="chatLauncher" aria-label="Open assistant">
+  <i class="fas fa-comment-dots"></i>
+</button>
+
+<div class="chat-panel" id="chatPanel" aria-hidden="true">
+  <div class="chat-head">
+    <div class="chat-head-title">
+      <span class="chat-dot"></span>
+      <div>
+        <strong>AlertEye Assistant</strong>
+        <small>Ask about features, setup or pricing</small>
+      </div>
+    </div>
+    <button class="chat-close" id="chatClose" aria-label="Close assistant"><i class="fas fa-xmark"></i></button>
+  </div>
+  <div class="chat-body" id="chatBody"></div>
+  <form class="chat-input" id="chatForm">
+    <input type="text" id="chatText" placeholder="Type your question..." autocomplete="off">
+    <button type="submit" aria-label="Send"><i class="fas fa-paper-plane"></i></button>
+  </form>
+</div>
+
+<script src="{{ url_for('static', filename='js/public.js') }}"></script>
+{% block extra_js %}{% endblock %}
+</body>
+</html>

@@ -1,0 +1,15 @@
+<!DOCTYPE html><html><body style="font-family:'Segoe UI',sans-serif;background:#f4f6fa;">
+<div style="max-width:560px;margin:40px auto;background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 2px 16px rgba(0,0,0,0.08);">
+<div style="background:#f59e0b;padding:28px;text-align:center;"><h2 style="color:#fff;margin:0;">⚠️ Subscription Expiring Soon</h2></div>
+<div style="padding:32px;">
+<p>Hi <strong>{{ user.name }}</strong>,</p>
+<p style="color:#6b7280;">Your AlertEye subscription is expiring in <strong>{{ user.days_until_expiry() }} days</strong> on <strong>{{ user.subscription_end.strftime('%B %d, %Y') }}</strong>.</p>
+<div style="background:#fffbeb;border:1px solid #fde68a;border-radius:8px;padding:16px;margin:20px 0;">
+  <strong style="color:#92400e;">Action Required:</strong>
+  <p style="color:#78350f;margin:8px 0 0;">Please contact your administrator to renew your subscription before expiry to avoid service interruption.</p>
+</div>
+<p style="color:#6b7280;font-size:13px;">Once expired, all detection modules will be locked until your subscription is renewed.</p>
+</div>
+<div style="background:#f8fafc;padding:16px;text-align:center;border-top:1px solid #e2e8f0;">
+<p style="color:#9ca3af;font-size:12px;margin:0;">AlertEye · Subscription Management</p>
+</div></div></body></html>

@@ -1,0 +1,125 @@
+{% extends "base.html" %}
+{% block title %}Applications{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <div>
+    <h1 class="page-title">Applications</h1>
+    <p class="page-subtitle">Review and manage client applications</p>
+  </div>
+</div>
+
+<div class="tab-pills mb-4">
+  <a href="?status=pending" class="tab-pill {% if current_status == 'pending' %}active{% endif %}">
+    <i class="fas fa-hourglass-half me-1"></i>Pending
+  </a>
+  <a href="?status=approved" class="tab-pill {% if current_status == 'approved' %}active{% endif %}">
+    <i class="fas fa-check-circle me-1"></i>Approved
+  </a>
+  <a href="?status=rejected" class="tab-pill {% if current_status == 'rejected' %}active{% endif %}">
+    <i class="fas fa-times-circle me-1"></i>Rejected
+  </a>
+</div>
+
+{% if users %}
+<div class="row g-4">
+  {% for u in users %}
+  <div class="col-lg-6">
+    <div class="card application-card">
+      <div class="card-body">
+        <div class="d-flex justify-content-between align-items-start mb-3">
+          <div class="d-flex align-items-center gap-3">
+            <div class="avatar-circle">{{ u.name[0].upper() }}</div>
+            <div>
+              <h6 class="mb-0 fw-600">{{ u.name }}</h6>
+              <small class="text-muted">{{ u.company or 'Individual' }}</small>
+            </div>
+          </div>
+          <div class="d-flex gap-2">
+            {% if u.payment_status == 'paid' %}
+            <span class="badge bg-success-soft text-success"><i class="fas fa-circle-check me-1"></i>Paid</span>
+            {% else %}
+            <span class="badge bg-secondary-soft text-secondary">Unpaid</span>
+            {% endif %}
+            <span class="badge bg-{{ 'warning' if u.status == 'pending' else 'success' if u.status == 'approved' else 'danger' }}-soft text-{{ 'warning' if u.status == 'pending' else 'success' if u.status == 'approved' else 'danger' }}">
+              {{ u.status.title() }}
+            </span>
+          </div>
+        </div>
+
+        <div class="info-list mb-3">
+          <div class="info-item"><i class="fas fa-envelope text-muted"></i>{{ u.email }}</div>
+          <div class="info-item"><i class="fas fa-phone text-muted"></i>{{ u.phone or 'Not provided' }}</div>
+          <div class="info-item"><i class="fas fa-calendar text-muted"></i>Applied {{ u.applied_at.strftime('%b %d, %Y') }}</div>
+          {% if u.payment_status == 'paid' %}
+          <div class="info-item"><i class="fas fa-receipt text-muted"></i>{{ u.payment_currency }} {{ '%.2f'|format(u.amount_paid or 0) }} · {{ PLANS.get(u.subscription_plan, {}).get('label', u.subscription_plan) }}
+            {% if u.invoice_number %}· <a href="{{ url_for('download_invoice', user_id=u.id) }}">Invoice</a>{% endif %}
+          </div>
+          {% endif %}
+        </div>
+
+        {% if u.status == 'pending' %}
+
+        <form method="POST" action="{{ url_for('approve_user', user_id=u.id) }}" class="border-top pt-3">
+          <div class="row g-2 mb-2">
+            <div class="col-12">
+              <label class="form-label small fw-500">Subscription Plan</label>
+              <select name="plan" class="form-select form-select-sm">
+                <option value="monthly" {% if u.subscription_plan == 'monthly' %}selected{% endif %}>Monthly (30 days)</option>
+                <option value="quarterly" {% if u.subscription_plan == 'quarterly' %}selected{% endif %}>Quarterly (90 days)</option>
+                <option value="yearly" {% if u.subscription_plan == 'yearly' %}selected{% endif %}>Yearly (365 days)</option>
+              </select>
+              <small class="text-muted">The applicant logs in with the password they chose at registration.</small>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label small fw-500">Enable Modules</label>
+            <div class="modules-check-grid">
+              {% for mod, icon, label in [('fire_smoke','fire','Fire & Smoke'),('weapon','gun','Weapon Detection'),('accident','car-burst','Accident System')] %}
+              <label class="module-check">
+                <input type="checkbox" name="modules" value="{{ mod }}" checked>
+                <span><i class="fas fa-{{ icon }}"></i> {{ label }}</span>
+              </label>
+              {% endfor %}
+            </div>
+          </div>
+          <div class="d-flex gap-2">
+            <button type="submit" class="btn btn-success btn-sm flex-fill">
+              <i class="fas fa-check me-1"></i>Approve & Send Email
+            </button>
+          </div>
+        </form>
+
+        <form method="POST" action="{{ url_for('reject_user', user_id=u.id) }}" class="mt-2">
+          <div class="d-flex gap-2">
+            <input type="text" name="reason" class="form-control form-control-sm" placeholder="Rejection reason...">
+            <button type="submit" class="btn btn-outline-danger btn-sm" onclick="return confirm('Reject this application?')">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+        </form>
+
+        {% elif u.status == 'rejected' and u.rejection_reason %}
+        <div class="alert alert-danger py-2 small mb-0">
+          <i class="fas fa-info-circle me-1"></i>{{ u.rejection_reason }}
+        </div>
+        {% elif u.status == 'approved' %}
+        <div class="d-flex gap-2">
+          <a href="{{ url_for('admin_user_detail', user_id=u.id) }}" class="btn btn-outline-primary btn-sm">
+            <i class="fas fa-eye me-1"></i>View Details
+          </a>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% else %}
+<div class="empty-page">
+  <i class="fas fa-folder-open"></i>
+  <h5>No {{ current_status }} applications</h5>
+  <p class="text-muted">Check back later</p>
+</div>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<body style="margin:0;padding:0;background:#f4f6fa;font-family:'Segoe UI',sans-serif;">
+<div style="max-width:600px;margin:40px auto;background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 2px 20px rgba(0,0,0,0.08);">
+  {% set colors = {'weapon':('#dc2626','🔫','WEAPON DETECTED'),'fire_smoke':('#f59e0b','🔥','FIRE / SMOKE DETECTED'),'accident':('#2563eb','🚗','ACCIDENT DETECTED')} %}
+  {% set c = colors.get(alert_type, ('#6b7280','🚨','ALERT')) %}
+  <div style="background:{{ c[0] }};padding:32px;text-align:center;">
+    <div style="font-size:48px;margin-bottom:8px;">{{ c[1] }}</div>
+    <h1 style="color:#fff;margin:0;font-size:22px;font-weight:700;">{{ c[2] }}</h1>
+    <p style="color:rgba(255,255,255,0.85);margin:8px 0 0;font-size:14px;">{{ timestamp.strftime('%B %d, %Y at %H:%M:%S UTC') }}</p>
+  </div>
+  <div style="padding:32px;">
+    <p style="color:#374151;font-size:15px;">Hi <strong>{{ user.name }}</strong>,</p>
+    <p style="color:#6b7280;">AlertEye has detected a <strong>{{ alert_type.replace('_',' ').title() }}</strong> event on your surveillance system.</p>
+
+    <div style="background:#fef2f2;border:1px solid #fecaca;border-radius:8px;padding:20px;margin:20px 0;">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+        <div>
+          <div style="font-size:11px;color:#9ca3af;font-weight:600;text-transform:uppercase;">Camera</div>
+          <div style="font-weight:600;color:#1e293b;margin-top:2px;">{{ camera_name }}</div>
+        </div>
+        <div>
+          <div style="font-size:11px;color:#9ca3af;font-weight:600;text-transform:uppercase;">Confidence</div>
+          <div style="font-weight:600;color:#dc2626;margin-top:2px;">{{ (confidence * 100)|int }}%</div>
+        </div>
+      </div>
+    </div>
+
+    {% if alert_type == 'weapon' %}
+    <div style="background:#fff7ed;border-left:4px solid #f97316;padding:14px;border-radius:0 8px 8px 0;margin-bottom:16px;">
+      <strong style="color:#9a3412;">⚠️ Police have been notified automatically.</strong>
+    </div>
+    {% elif alert_type == 'fire_smoke' %}
+    <div style="background:#fff7ed;border-left:4px solid #f97316;padding:14px;border-radius:0 8px 8px 0;margin-bottom:16px;">
+      <strong style="color:#9a3412;">⚠️ Fire brigade has been notified automatically.</strong>
+    </div>
+    {% elif alert_type == 'accident' %}
+    <div style="background:#eff6ff;border-left:4px solid #2563eb;padding:14px;border-radius:0 8px 8px 0;margin-bottom:16px;">
+      <strong style="color:#1e40af;">⚠️ Ambulance has been notified automatically.</strong>
+    </div>
+    {% endif %}
+
+    <p style="color:#6b7280;font-size:13px;">If this was a false alarm, you can dismiss it from your desktop app. A screenshot is attached if available.</p>
+  </div>
+  <div style="background:#f8fafc;padding:16px 32px;text-align:center;border-top:1px solid #e2e8f0;">
+    <p style="color:#9ca3af;font-size:12px;margin:0;">AlertEye · Automated Alert System</p>
+  </div>
+</div>
+</body>
+</html>

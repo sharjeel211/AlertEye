@@ -1,0 +1,138 @@
+{% extends "base.html" %}
+{% block title %}Admin Dashboard{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <div>
+    <h1 class="page-title">Dashboard</h1>
+    <p class="page-subtitle">System overview and recent activity</p>
+  </div>
+  <div class="page-actions">
+    <span class="text-muted small"><i class="fas fa-clock me-1"></i>{{ now.strftime('%b %d, %Y %H:%M') if now else '' }}</span>
+  </div>
+</div>
+
+<div class="stats-grid">
+  <div class="stat-card">
+    <div class="stat-icon bg-primary-soft"><i class="fas fa-users text-primary"></i></div>
+    <div class="stat-body">
+      <div class="stat-value">{{ total_users }}</div>
+      <div class="stat-label">Total Clients</div>
+    </div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-icon bg-warning-soft"><i class="fas fa-hourglass-half text-warning"></i></div>
+    <div class="stat-body">
+      <div class="stat-value">{{ pending }}</div>
+      <div class="stat-label">Pending Applications</div>
+    </div>
+    {% if pending > 0 %}
+    <a href="{{ url_for('admin_applications') }}" class="stat-action">Review <i class="fas fa-arrow-right ms-1"></i></a>
+    {% endif %}
+  </div>
+  <div class="stat-card">
+    <div class="stat-icon bg-success-soft"><i class="fas fa-circle-check text-success"></i></div>
+    <div class="stat-body">
+      <div class="stat-value">{{ active_subs }}</div>
+      <div class="stat-label">Active Subscriptions</div>
+    </div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-icon bg-danger-soft"><i class="fas fa-bell text-danger"></i></div>
+    <div class="stat-body">
+      <div class="stat-value">{{ recent_alerts|length }}</div>
+      <div class="stat-label">Recent Alerts</div>
+    </div>
+  </div>
+</div>
+
+<div class="row g-4 mt-1">
+
+  {% if expiring %}
+  <div class="col-12">
+    <div class="card card-warning">
+      <div class="card-header">
+        <i class="fas fa-triangle-exclamation text-warning me-2"></i>
+        <strong>Subscriptions Expiring Within 7 Days</strong>
+      </div>
+      <div class="card-body p-0">
+        <div class="table-responsive">
+          <table class="table table-hover mb-0">
+            <thead><tr><th>Client</th><th>Email</th><th>Expires</th><th>Days Left</th><th></th></tr></thead>
+            <tbody>
+              {% for u in expiring %}
+              <tr>
+                <td><strong>{{ u.name }}</strong></td>
+                <td>{{ u.email }}</td>
+                <td>{{ u.subscription_end.strftime('%b %d, %Y') }}</td>
+                <td><span class="badge bg-warning text-dark">{{ u.days_until_expiry() }}d</span></td>
+                <td><a href="{{ url_for('admin_user_detail', user_id=u.id) }}" class="btn btn-sm btn-outline-primary">Renew</a></td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+
+  <div class="col-lg-7">
+    <div class="card h-100">
+      <div class="card-header d-flex justify-content-between align-items-center">
+        <span><i class="fas fa-bell me-2 text-danger"></i>Recent Alerts</span>
+        <a href="{{ url_for('admin_alerts') }}" class="btn btn-sm btn-outline-secondary">View All</a>
+      </div>
+      <div class="card-body p-0">
+        {% if recent_alerts %}
+        <div class="table-responsive">
+          <table class="table table-hover mb-0">
+            <thead><tr><th>Type</th><th>Client</th><th>Camera</th><th>Confidence</th><th>Time</th></tr></thead>
+            <tbody>
+              {% for a in recent_alerts %}
+              <tr>
+                <td>
+                  {% set icons = {'weapon': ('danger','gun'), 'fire_smoke': ('warning','fire'), 'accident': ('primary','car-burst')} %}
+                  {% set ic = icons.get(a.alert_type, ('secondary','bell')) %}
+                  <span class="badge bg-{{ ic[0] }}-soft text-{{ ic[0] }}">
+                    <i class="fas fa-{{ ic[1] }} me-1"></i>{{ a.alert_type.replace('_',' ').title() }}
+                  </span>
+                </td>
+                <td>{{ a.user.name if a.user else '—' }}</td>
+                <td><code class="small">{{ a.camera_name }}</code></td>
+                <td><span class="confidence-bar" data-val="{{ (a.confidence*100)|int }}">{{ (a.confidence*100)|int }}%</span></td>
+                <td class="text-muted small">{{ a.timestamp.strftime('%m/%d %H:%M') }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        {% else %}
+        <div class="empty-state py-4"><i class="fas fa-bell-slash"></i><p>No alerts yet</p></div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-5">
+    <div class="card h-100">
+      <div class="card-header"><i class="fas fa-list-check me-2 text-primary"></i>Activity Log</div>
+      <div class="activity-feed">
+        {% for log in recent_logs %}
+        <div class="activity-item">
+          <div class="activity-dot"></div>
+          <div class="activity-body">
+            <div class="activity-action">{{ log.action }}</div>
+            <div class="activity-meta">
+              {{ log.user.name if log.user else 'System' }} · {{ log.timestamp.strftime('%m/%d %H:%M') }}
+            </div>
+          </div>
+        </div>
+        {% else %}
+        <div class="empty-state py-4"><i class="fas fa-list"></i><p>No activity yet</p></div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

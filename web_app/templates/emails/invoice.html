@@ -1,0 +1,17 @@
+<!DOCTYPE html><html><body style="font-family:'Segoe UI',sans-serif;background:#f4f6fa;">
+<div style="max-width:560px;margin:40px auto;background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 2px 16px rgba(0,0,0,0.08);">
+<div style="background:linear-gradient(135deg,#1a1f36,#2563eb);padding:28px;text-align:center;"><h2 style="color:#fff;margin:0;">🧾 Payment Receipt</h2><p style="color:rgba(255,255,255,0.8);margin:4px 0 0;">Thank you for your purchase</p></div>
+<div style="padding:32px;">
+<p>Hi <strong>{{ user.name }}</strong>,</p>
+<p style="color:#6b7280;">We've received your payment for the <strong>AlertEye Surveillance System</strong>. Your invoice is attached to this email as a PDF.</p>
+<div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:20px;margin:16px 0;">
+  <div style="margin-bottom:10px;"><strong>Invoice:</strong> {{ user.invoice_number }}</div>
+  <div style="margin-bottom:10px;"><strong>Plan:</strong> {{ plan.label or user.subscription_plan }}</div>
+  <div style="margin-bottom:10px;"><strong>Amount paid:</strong> {{ user.payment_currency }} {{ '%.2f'|format(user.amount_paid or 0) }}</div>
+  <div><strong>Status:</strong> <span style="color:#16a34a;font-weight:600;">PAID</span></div>
+</div>
+<p style="color:#6b7280;">Your request is now with our team for approval. Once approved, we'll email your login credentials and the desktop app download link.</p>
+</div>
+<div style="background:#f8fafc;padding:16px;text-align:center;border-top:1px solid #e2e8f0;">
+<p style="color:#9ca3af;font-size:12px;margin:0;">AlertEye · Surveillance Systems</p>
+</div></div></body></html>

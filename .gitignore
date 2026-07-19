@@ -1,0 +1,43 @@
+# Environment secrets
+.env
+.env.production
+.env.*
+!.env.example
+
+# Firebase service account key — NEVER commit this
+*firebase-adminsdk*.json
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+venv/
+env/
+*.egg-info/
+build/
+dist/
+
+# Logs & runtime data
+desktop_app/logs/
+desktop_app/recordings/
+web_app/instance/
+
+# Trained model weights — auto-downloaded by setup_models.py, no need to commit
+desktop_app/models/*.pt
+desktop_app/yolov8n.pt
+
+# OS / editor
+.DS_Store
+.vscode/
+.idea/
+
+# Android
+andorid Project/AlertEye/.gradle/
+andorid Project/AlertEye/build/
+andorid Project/AlertEye/app/build/
+andorid Project/AlertEye/local.properties
+andorid Project/AlertEye/.idea/
+
+# Firebase Android config — contains a project-specific API key, get your own
+# from Firebase Console and keep it local only
+andorid Project/AlertEye/app/google-services.json

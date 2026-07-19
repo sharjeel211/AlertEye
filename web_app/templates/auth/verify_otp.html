@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Verify Email — AlertEye</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+</head>
+<body class="auth-body">
+
+<div class="auth-container">
+  <div class="auth-card" style="max-width:440px;">
+    <div class="auth-header">
+      <img class="auth-logo" src="{{ url_for('static', filename='img/logo.png') }}" alt="AlertEye">
+      <h2 class="auth-title">Verify your email</h2>
+      <p class="auth-subtitle">Enter the 6-digit code we sent to<br><strong>{{ email }}</strong></p>
+    </div>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% for category, message in messages %}
+      <div class="alert alert-{{ 'danger' if category == 'error' else category }} py-2 small">{{ message }}</div>
+      {% endfor %}
+    {% endwith %}
+
+    <form method="POST" action="{{ url_for('verify_otp') }}">
+      <div class="mb-3">
+        <label class="form-label">Verification Code</label>
+        <input type="text" name="otp" class="form-control form-control-lg text-center"
+               inputmode="numeric" pattern="[0-9]{6}" maxlength="6" autocomplete="one-time-code"
+               placeholder="------" style="letter-spacing:.5em;font-weight:600;" required autofocus>
+      </div>
+
+      <button type="submit" class="btn btn-primary w-100 btn-auth">
+        <i class="fas fa-check me-2"></i>Verify & Continue
+      </button>
+    </form>
+
+    <div class="auth-footer">
+      <p>Didn't get it? <a href="{{ url_for('resend_otp') }}">Resend code</a></p>
+      <p><a href="{{ url_for('apply') }}">&larr; Use a different email</a></p>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Payment Successful — AlertEye</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+</head>
+<body class="auth-body">
+
+<div class="auth-container">
+  <div class="auth-card text-center" style="max-width:480px;">
+    <div class="mb-3">
+      <i class="fas fa-circle-check text-success" style="font-size:3.5rem;"></i>
+    </div>
+    <h2 class="auth-title">Payment successful!</h2>
+    <p class="auth-subtitle">Thank you, {{ user.name }}. Your payment has been received.</p>
+
+    <div class="info-box text-start my-4">
+      <div class="d-flex justify-content-between mb-2">
+        <span class="text-muted">Invoice</span><strong>{{ user.invoice_number }}</strong>
+      </div>
+      <div class="d-flex justify-content-between mb-2">
+        <span class="text-muted">Amount paid</span>
+        <strong>{{ user.payment_currency }} {{ '%.2f'|format(user.amount_paid or 0) }}</strong>
+      </div>
+      <div class="d-flex justify-content-between">
+        <span class="text-muted">Status</span>
+        <span class="badge bg-success">Paid</span>
+      </div>
+    </div>
+
+    <div class="info-box mb-4">
+      <i class="fas fa-info-circle me-2 text-primary"></i>
+      Your request has been sent to our team for <strong>approval</strong>. Once approved,
+      we'll email your login credentials and the desktop app download link.
+    </div>
+
+    <a href="{{ url_for('download_invoice', user_id=user.id) }}" class="btn btn-primary w-100 btn-auth mb-2">
+      <i class="fas fa-file-pdf me-2"></i>Download Invoice (PDF)
+    </a>
+    <a href="{{ url_for('login') }}" class="btn btn-outline-secondary w-100">
+      Back to Sign In
+    </a>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

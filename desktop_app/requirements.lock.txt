@@ -1,0 +1,15 @@
+# AlertEye - EXACT versions from the known-good PC.
+# Install on the target PC with:  pip install -r requirements.lock.txt
+# These are pinned (==) so detection behaves identically everywhere.
+
+numpy==2.4.6
+opencv-python==4.10.0.84
+opencv-contrib-python==4.10.0.84
+pillow==10.4.0
+scipy==1.17.1
+pandas==2.3.3
+PySide6==6.11.1
+PyYAML==6.0.3
+torch==2.12.1
+torchvision==0.27.1
+ultralytics==8.4.72
