@@ -122,4 +122,4 @@ Never commit `.env`, `.env.production`, your Firebase **service account** JSON (
 
 ## Team
 
-Built by [Ahmed] and team as a Final Year Project (FYP-2), 2026.
+Built by [Sharjeel Ahmed] and team as a Final Year Project (FYP-2), 2026.
